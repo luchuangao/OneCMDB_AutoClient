@@ -1,14 +1,16 @@
-# OneCMDB
-基于Django实现CMDB
+# OneCMDB_AutoClient
+基于Django实现CMDB客户端
 
-##### 目录规范
+#### 目录规范
 * bin 	可执行文件
 * config 	配置文件
 * lib 	公共模块
 * src 	业务逻辑
+* src/plugins 自定义插件
 * log【由于日志占用空间太大，不易放在程序目录】
 
-##### 配置文件
+
+#### 配置文件
 配置文件分为默认配置文件和自定义配置文件，自定义配置文件优先于默认配置文
 知识点：
 1. 字符串导入模块
@@ -20,6 +22,31 @@ from django.conf import global_settings
 用户自定义配置文件：settings.py  
 默认配置文件：global_settings.py  
 
+
+#### 开发资产插件（可插拔）
+每个公司采集得资产类型有差别，可以通过添加配置和自定义插件来实现  
+根据不同模式，执行不同的命令，可以使用两种方式来实现：
+1. 定义基类 base.py，让所有的自定义插件类继承基类，在基类中进行判断MODE
+2. 给src/plugins/__init__.py 中的PluginManager定义command方法，进行判断客户端选择得MODE 【推荐，比较简单】
+
+知识点：  
+1. 字符串导入模块
+2. 反射
+
+注意点： 
+1. salt现在只支持py2，如果想再py3环境中执行salt，需要使用subprocess来执行 
+
+默认资产类型：  
+1. baisc
+2. board
+3. cpu
+4. disk
+5. memory
+6. nic
+
+定义插件：在src/plugins目录定义  
+
+配置文件：在config/settings.py中
 
 
 
