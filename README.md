@@ -7,6 +7,8 @@
 * lib 	公共模块
 * lib/convert.py 类型转换，将MB转换成GB
 * src 	业务逻辑
+* src/client.py 连接服务器端接口文件
+* src/script.py 连接接口调用文件
 * src/plugins 自定义插件
 * log【由于日志占用空间太大，不易放在程序目录】
 * files   调试文件
@@ -27,6 +29,7 @@ from django.conf import global_settings
 
 #### 开发资产插件（可插拔）
 每个公司采集得资产类型有差别，可以通过添加配置和自定义插件来实现，每个插件预留了钩子initial，可以自行扩展。  
+插件遵循：高内聚、低耦合原理。
 
 根据不同模式，执行不同的命令，可以使用两种方式来实现：
 1. 定义基类 base.py，让所有的自定义插件类继承基类，在基类中进行判断MODE
@@ -60,6 +63,13 @@ from django.conf import global_settings
 1. MegaCli  【磁盘命令】
 2. dmidecode【内存命令】
 
+#### 向API获取数据发送数据
+
+文件路径：src/client.py
+执行文件：src/script.py
+
+AGENT定时发送数据即可:向API发送资产信息  
+SSH、SALT先通过API获取未采集的主机，然后进行获取未采集的主机信息，最后向API发送资产信息
 
 
 

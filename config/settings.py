@@ -28,5 +28,5 @@ PLUGINS_DICT = {
     'nic': "src.plugins.nic.Nic",
 }
 
-
+API = "http://luchuangao.cnblogs.com/"
 
