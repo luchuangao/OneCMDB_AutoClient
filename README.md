@@ -5,9 +5,11 @@
 * bin 	可执行文件
 * config 	配置文件
 * lib 	公共模块
+* lib/convert.py 类型转换，将MB转换成GB
 * src 	业务逻辑
 * src/plugins 自定义插件
 * log【由于日志占用空间太大，不易放在程序目录】
+* files   调试文件
 
 
 #### 配置文件
@@ -24,14 +26,20 @@ from django.conf import global_settings
 
 
 #### 开发资产插件（可插拔）
-每个公司采集得资产类型有差别，可以通过添加配置和自定义插件来实现  
+每个公司采集得资产类型有差别，可以通过添加配置和自定义插件来实现，每个插件预留了钩子initial，可以自行扩展。  
+
 根据不同模式，执行不同的命令，可以使用两种方式来实现：
 1. 定义基类 base.py，让所有的自定义插件类继承基类，在基类中进行判断MODE
 2. 给src/plugins/__init__.py 中的PluginManager定义command方法，进行判断客户端选择得MODE 【推荐，比较简单】
 
+插件运行模式：
+1. DEBUG模式，DEBUG模式，在配置文件中把DEBUG=True
+1. 非DEBUG模式，把DEBUG=False
+
 知识点：  
 1. 字符串导入模块
 2. 反射
+3. 错误堆栈信息 traceback
 
 注意点： 
 1. salt现在只支持py2，如果想再py3环境中执行salt，需要使用subprocess来执行 
@@ -48,6 +56,9 @@ from django.conf import global_settings
 
 配置文件：在config/settings.py中
 
+执行命令：需要额外安装
+1. MegaCli  【磁盘命令】
+2. dmidecode【内存命令】
 
 
 

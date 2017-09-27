@@ -2,8 +2,15 @@
 用户自定义配置文件
 """
 
+import os
+
+BASEDIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 USER = "root"
 PWD = "123.com"
+
+# debug模式
+DEBUG = True
 
 MODE = "AGENT" # SALT, SSH
 SSH_USER = "root"

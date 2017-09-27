@@ -13,4 +13,5 @@ if __name__ == '__main__':
     # server_info = PluginManager('c1.com').exec_plugin()
 
     server_info = PluginManager().exec_plugin()
-    print(server_info)
+    for k,v in server_info.items():
+        print(k,v)

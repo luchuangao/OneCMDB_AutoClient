@@ -1,5 +1,6 @@
 import importlib
 import paramiko
+import traceback
 from lib.conf.config import settings
 
 
@@ -10,6 +11,7 @@ class PluginManager(object):
         self.plugin_dict = settings.PLUGINS_DICT
 
         self.mode = settings.MODE
+        self.debug = settings.DEBUG
         if self.mode == "SSH":
             self.ssh_user = settings.SSH_USER
             self.ssh_port = settings.SSH_PORT
@@ -24,13 +26,22 @@ class PluginManager(object):
         response = {}
         for k,v in self.plugin_dict.items():
             # 'basic': "src.plugins.basic.Basic",
-            module_path, class_name = v.rsplit('.', 1)
-            m = importlib.import_module(module_path)
-            cls = getattr(m,class_name)
-
-            # result = "根据v获取类， 并执行其方法采集资产"
-            result = cls().process(self.command)
-            response[k] = result
+            ret = {'status': True, 'data': None}
+            try:
+                module_path, class_name = v.rsplit('.', 1)
+                m = importlib.import_module(module_path)
+                cls = getattr(m,class_name)
+                if hasattr(cls, 'initial'):
+                    obj = cls.initial()
+                else:
+                    obj = cls()
+                # result = "根据v获取类， 并执行其方法采集资产"
+                result = obj.process(self.command, self.debug)
+                ret['data'] = result
+            except Exception as e:
+                ret['status'] = False
+                ret['data'] = "[%s][%s] 采集数据出现错误：%s" %(self.hostname if self.hostname else "AGENT", k, traceback.format_exc() )
+            response[k] = ret
         return response
 
     def command(self, cmd):
