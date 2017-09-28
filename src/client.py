@@ -17,8 +17,15 @@ class Agent(Base):
 
     def execute(self):
         server_info = PluginManager().exec_plugin()
-        self.post_asset(server_info)
+        hostname=server_info['basic']['data']['hostname']
+        certname = open(settings.CERT_PATH, 'r', encoding='utf-8').read().strip()
+        if not certname.strip():
+            with open(settings.CERT_PATH, 'w', encoding='utf-8') as f:
+                f.write(hostname)
+        else:
+            server_info['basic']['data']['hostname'] = certname
 
+        self.post_asset(server_info)
 
 class SSHSALT(Base):
 

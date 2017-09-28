@@ -7,8 +7,8 @@
 * lib 	公共模块
 * lib/convert.py 类型转换，将MB转换成GB
 * src 	业务逻辑
-* src/client.py 连接服务器端接口文件
-* src/script.py 连接接口调用文件
+* src/client.py 向API获取数据发送数据文件
+* src/script.py 调用src/client.py得文件
 * src/plugins 自定义插件
 * log【由于日志占用空间太大，不易放在程序目录】
 * files   调试文件
@@ -65,14 +65,18 @@ from django.conf import global_settings
 
 #### 向API获取数据发送数据
 
-文件路径：src/client.py
+文件路径：src/client.py  
 执行文件：src/script.py
 
 AGENT定时发送数据即可:向API发送资产信息  
 SSH、SALT先通过API获取未采集的主机，然后进行获取未采集的主机信息，最后向API发送资产信息
 
 
+#### 唯一标识
 
+使用主机名作为唯一标识，依赖本地文件
+
+唯一标识文件：config/cert
 
 
 

@@ -30,3 +30,4 @@ PLUGINS_DICT = {
 
 API = "http://luchuangao.cnblogs.com/"
 
+CERT_PATH = os.path.join(BASEDIR, 'config', 'cert')
