@@ -78,7 +78,16 @@ SSH、SALT先通过API获取未采集的主机，然后进行获取未采集的�
 
 唯一标识文件：config/cert
 
+修改代码：src/client.py
 
+#### 线程池
+
+为提高SSH、SALT并发能力，引入线程池  
+from concurrent.futures import ThreadPoolExecutor
+
+注：ThreadPoolExecutor在py2不支持，只支持py3
+
+修改代码：src/client.py
 
 
 

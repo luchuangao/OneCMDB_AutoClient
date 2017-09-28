@@ -2,6 +2,7 @@ import requests
 import json
 from src.plugins import PluginManager
 from lib.conf.config import settings
+from concurrent.futures import ThreadPoolExecutor
 
 
 class Base(object):
@@ -38,11 +39,15 @@ class SSHSALT(Base):
             return
         return result['data']
 
+    def run(self, host):
+        server_info = PluginManager(host).exec_plugin()
+        self.post_asset(server_info)
+
     def execute(self):
         host_list = self.get_host()
+        pool = ThreadPoolExecutor(10)
         for host in host_list:
-            server_info = PluginManager(host).exec_plugin()
-            self.post_asset(server_info)
+            pool.submit(self.run, host)
 
 
 
