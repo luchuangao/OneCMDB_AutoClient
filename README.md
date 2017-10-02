@@ -6,6 +6,7 @@
 * config 	配置文件
 * lib 	公共模块
 * lib/convert.py 类型转换，将MB转换成GB
+* lib/utils.py 添加API令牌，AES数据加密
 * src 	业务逻辑
 * src/client.py 向API获取数据发送数据文件
 * src/script.py 调用src/client.py得文件
@@ -89,8 +90,25 @@ from concurrent.futures import ThreadPoolExecutor
 
 修改代码：src/client.py
 
+#### 添加API验证令牌，并对数据进行AES加密
 
+为什么要做API验证？  
+传输过程中，保证数据不被篡改。  
 
+客户端令牌：通过key+ctime(客户端当前时间)动态生成令牌，再进行MD5加密，并携带客户端时间进行传送
+创建动态KEY：md5(key+time)|time  
+
+数据加密：通过AES对数据进行加密(借鉴自微信数据加密方式)    
+from Crypto.Cipher import AES  
+
+加密方式有两种：AES比RSA功能要强大  
+* RSA（最长只能对32个字节进行加密）
+* AES（加密的字符串，必须是16个字节或16个字节的倍数）
+
+修改代码：  
+config/settings.py 添加DATA_KEY参数  
+lib/utils.py 添加数据加密解密和验证功能  
+src/client.py 调用utils.py方法进行加密  
 
 
 

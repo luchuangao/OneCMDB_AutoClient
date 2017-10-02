@@ -31,3 +31,5 @@ PLUGINS_DICT = {
 API = "http://127.0.0.1:8000/api/asset.html"
 
 CERT_PATH = os.path.join(BASEDIR, 'config', 'cert')
+
+DATA_KEY = b'dfdsdfsasdfdsdfs'
